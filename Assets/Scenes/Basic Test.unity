@@ -170,7 +170,7 @@ Light:
   serializedVersion: 3
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: .5
+  m_Intensity: .779999971
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -207,6 +207,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!1 &852331241
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 852331243}
+  - 114: {fileID: 852331242}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &852331242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 852331241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a1b06c6a284f8344963c6b33c9991bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spherePreFab: {fileID: 165812, guid: 5a61faf6e07c60f4a9f5a8df30f35063, type: 2}
+  m_gravity: {x: 0, y: -9.81999969, z: 0}
+  m_spawnPoint: {x: 0, y: 5, z: 0}
+  m_integratorType: 0
+  m_integratorTimeStep: .0166666675
+  m_groundPlanes:
+  - {fileID: 250860453}
+  m_groundStiffness: 800
+  m_groundDamping: 5
+--- !u!4 &852331243
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 852331241}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
 --- !u!1 &2114061475
 GameObject:
   m_ObjectHideFlags: 0
