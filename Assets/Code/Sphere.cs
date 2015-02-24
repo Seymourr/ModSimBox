@@ -8,8 +8,8 @@ public class Sphere: MonoBehaviour
     
     [SerializeField]
     private Node spherePreFab = null;
-    
-    [SerializeField]
+ 
+	[SerializeField]
     private Vector3 m_gravity = new Vector3(0,-9.82f,0);
     
     [SerializeField]
@@ -100,4 +100,9 @@ public class Sphere: MonoBehaviour
     {
         m_integrators[m_integratorType].Advance(the_Node, ApplyForces, m_integratorTimeStep);
     }
+
+	public Node getNode()
+	{
+		return node;
+	}
 }
