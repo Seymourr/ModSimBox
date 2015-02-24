@@ -98,6 +98,6 @@ public class Sphere: MonoBehaviour
 
     void AdvanceSimulation()
     {
-        //m_integrators[m_integratorType].Advance(the_Node, ApplyForces, m_integratorTimeStep);
+        m_integrators[m_integratorType].Advance(the_Node, ApplyForces, m_integratorTimeStep);
     }
 }
