@@ -286,6 +286,8 @@ MonoBehaviour:
   - {fileID: 250860453}
   m_groundStiffness: 800
   m_groundDamping: 5
+  hasSpringForce: 0
+  springForce: {x: 0, y: 0, z: 0}
 --- !u!4 &1806647021
 Transform:
   m_ObjectHideFlags: 0
@@ -327,13 +329,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spherePreFab: {fileID: 11439028, guid: 5a61faf6e07c60f4a9f5a8df30f35063, type: 2}
   m_gravity: {x: 0, y: -9.81999969, z: 0}
-  m_spawnPoint: {x: 10, y: 3, z: 0}
+  m_spawnPoint: {x: 4, y: 8, z: 0}
   m_integratorType: 0
   m_integratorTimeStep: .0166666675
   m_groundPlanes:
   - {fileID: 250860453}
   m_groundStiffness: 800
   m_groundDamping: 5
+  hasSpringForce: 0
+  springForce: {x: 0, y: 0, z: 0}
 --- !u!4 &1881180682
 Transform:
   m_ObjectHideFlags: 0

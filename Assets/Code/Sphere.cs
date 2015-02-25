@@ -30,7 +30,9 @@ public class Sphere: MonoBehaviour
     [SerializeField]
     private float m_groundDamping = 5.0f;
     
-    
+	public bool hasSpringForce = false;
+
+	public Vector3 springForce;
     
     private Node node = null;
     private List<Node> the_Node = null;
@@ -63,12 +65,17 @@ public class Sphere: MonoBehaviour
     {
         ClearAndApplyGravity();
         ApplyGroundForces();
+		if (hasSpringForce) {
+			node.ApplyForce (springForce);
+			hasSpringForce = false;
+		}
     }
 
     void ClearAndApplyGravity()
     {
         node.ClearForce();
         node.ApplyForce(m_gravity * node.Mass);
+
     }
 
     void ApplyGroundForces()
