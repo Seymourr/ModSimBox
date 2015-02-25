@@ -1,46 +1,49 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class Spring : MonoBehaviour {
+public class Spring {
 
-	// Use this for initialization
-	[SerializeField]
 	private Sphere s1 = null;
-
-	[SerializeField]
 	private Sphere s2 = null;
+    
+    float length = 2.0f;
+    public float SpringLength {
+        get { return length; }
+        set { length = value; }
+    }
+    
+    
+	float stiffness = 200.0f;
+    public float Stiffness {
+        get { return stiffness; }
+        set { stiffness = value; }
+    }
+    
+	float damping = 5.0f;
+    public float Damping {
+        get { return damping; }
+        set { damping = value; }
+    }
+    
+    public Spring(Node n1, Node n2){
+ 
+    }
 
+	public void ApplySpringForces(){
+		Node node1 = s1.getNode ();
+		Node node2 = s2.getNode ();
 
-	void Start () {
-		s1.transform.parent = transform;
-		s2.transform.parent = transform;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		ApplySpringForces ();
-	}
-
-	void ApplySpringForces()
-	{
-		Node p1 = s1.getNode ();
-		Node p2 = s2.getNode ();
-
-		float m_totalLength = 2.0f;
-		float m_ropeStiffness = 800.0f;
-		float m_ropeDamping = 5.0f;
-
-		float segmentLength = m_totalLength;
-		Vector3 normLized = p1.State.Position - p2.State.Position;
+		Vector3 normLized = node1.State.Position - node2.State.Position;
 		float temp = normLized.magnitude;
 		normLized /= temp;
-		Vector3 FSpring = m_ropeStiffness*(segmentLength - temp) * normLized;
-		Vector3 FDamp = -1*m_ropeDamping * (p1.State.Velocity - p2.State.Velocity);
+		Vector3 FSpring = stiffness*(length - temp) * normLized;
+		Vector3 FDamp = -damping * (node1.State.Velocity - node2.State.Velocity);
 
 		s1.hasSpringForce = true;
 		s2.hasSpringForce = true;
 
 		s1.springForce = (FSpring + FDamp);
 		s2.springForce = ((-FSpring) + (-FDamp));
+
+
 	}
 }
