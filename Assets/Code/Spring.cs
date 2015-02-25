@@ -2,9 +2,9 @@
 
 public class Spring {
 
-	private Sphere s1 = null;
-	private Sphere s2 = null;
-    
+	private Node node1 = null;
+	private Node node2 = null;
+   
     float length = 2.0f;
     public float SpringLength {
         get { return length; }
@@ -25,25 +25,23 @@ public class Spring {
     }
     
     public Spring(Node n1, Node n2){
+		node1 = n1;
+		node2 = n2;
  
     }
 
-	public void ApplySpringForces(){
-		Node node1 = s1.getNode ();
-		Node node2 = s2.getNode ();
 
+	public void ApplySpringForces(){
 		Vector3 normLized = node1.State.Position - node2.State.Position;
 		float temp = normLized.magnitude;
 		normLized /= temp;
 		Vector3 FSpring = stiffness*(length - temp) * normLized;
 		Vector3 FDamp = -damping * (node1.State.Velocity - node2.State.Velocity);
-
-		s1.hasSpringForce = true;
-		s2.hasSpringForce = true;
-
-		s1.springForce = (FSpring + FDamp);
-		s2.springForce = ((-FSpring) + (-FDamp));
-
+		
+		node1.ApplyForce (FSpring);
+		node1.ApplyForce (FDamp);
+		node2.ApplyForce (-FSpring); //Opposite force
+		node2.ApplyForce (-FDamp); //Opposite force
 
 	}
 }
