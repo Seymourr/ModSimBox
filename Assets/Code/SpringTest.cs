@@ -30,8 +30,6 @@ public class SpringTest: MonoBehaviour
     [SerializeField]
     private float m_groundDamping = 5.0f;
     
-    
-    
     private List<Node> nodes = null;
     private List<Spring> springs = null;
     private float m_accumulator = 0.0f;
@@ -42,8 +40,10 @@ public class SpringTest: MonoBehaviour
         m_integrators.Add(IntegratorType.RK4, new RK4Integrator());
         Node node = Instantiate(nodePreFab, m_spawnPoint, Quaternion.identity) as Node;
         node.transform.parent = transform;
+		node.GetComponent<Draggable> ().setDragHook (/*Insert something draggable of type Transform..*/transform);
         Node node2 = Instantiate(nodePreFab, m_spawnPoint+(new Vector3(0.05f,1,0)), Quaternion.identity) as Node;
         node2.transform.parent = transform;
+		node2.GetComponent<Draggable> ().setDragHook (/*Insert something draggable of type Transform..*/transform);
         nodes = new List<Node>();
         nodes.Add(node);
         nodes.Add(node2);
