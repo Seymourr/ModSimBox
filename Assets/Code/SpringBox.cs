@@ -72,6 +72,7 @@ public class SpringBox: MonoBehaviour
     private Node addNode(Node parent, float offsetx, float offsety, float offsetz){
         Node node2 = Instantiate(nodePreFab, parent.transform.position+(new Vector3(offsetx,offsety,offsetz)), Quaternion.identity) as Node;
         node2.transform.parent = transform;
+        node2.GetComponent<Draggable>().setDragHook (/*Insert something draggable of type Transform..*/transform);
         nodes.Add(node2);
         addSpringTo(parent,node2);
         return node2;
