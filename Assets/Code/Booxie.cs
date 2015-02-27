@@ -121,22 +121,22 @@ public class Booxie: MonoBehaviour
         addSpringTo(r_shoulder,lastSpine);
         
         //arms
-        List<Node> r_arm = createLeg(r_shoulder.State.Position+new Vector3(shoulder_size/2,-leg_height*scale-leg_thickness*scale/2,-leg_thickness/2+nodeSize*scale/2));
-        Vector3 middle = r_arm[0].State.Position+(r_arm[8].State.Position-r_arm[0].State.Position)/2;
-        var rotation = Quaternion.Euler(0, 0, 90); //rotating with 90 causes some problems so we fix it in the rotation
+        List<Node> r_arm = createLeg(r_shoulder.State.Position+new Vector3(-nodeSize*scale+leg_thickness*scale+leg_height*scale,-leg_height*scale-leg_thickness*scale/2,-leg_thickness/2+nodeSize*scale/2));
+        Vector3 middle = r_arm[0].State.Position+(r_arm[16].State.Position-r_arm[0].State.Position)/2;
+        var rotation = Quaternion.Euler(0, 0, -90);
         foreach (Node node in r_arm){
-            node.State.Position = RotateAroundPoint(node.State.Position,middle,rotation)+ new Vector3(leg_height+leg_thickness,leg_thickness*scale,0);
+            node.State.Position = RotateAroundPoint(node.State.Position,middle,rotation);
         }
-        addSpringTo(r_arm[16],r_shoulder);
-        addSpringTo(r_arm[15],r_shoulder);
-        addSpringTo(r_arm[14],r_shoulder);
-        addSpringTo(r_arm[13],r_shoulder);
+        addSpringTo(r_arm[0],r_shoulder);
+        addSpringTo(r_arm[1],r_shoulder);
+        addSpringTo(r_arm[2],r_shoulder);
+        addSpringTo(r_arm[3],r_shoulder);
         
-        List<Node> l_arm = createLeg(l_shoulder.State.Position+new Vector3(-shoulder_size/2-leg_thickness,-leg_height*scale-leg_thickness*scale/2,-leg_thickness/2+nodeSize*scale/2));
-        middle = l_arm[0].State.Position+(l_arm[8].State.Position-l_arm[0].State.Position)/2;
+        List<Node> l_arm = createLeg(l_shoulder.State.Position+new Vector3(-shoulder_size/2+nodeSize*scale/2-leg_thickness*scale-leg_height*scale,-leg_height*scale-leg_thickness*scale/2,-leg_thickness/2+nodeSize*scale/2));
+        middle = l_arm[0].State.Position+(l_arm[16].State.Position-l_arm[0].State.Position)/2;
         rotation = Quaternion.Euler(0, 0, 90);
         foreach (Node node in l_arm){
-            node.State.Position = RotateAroundPoint(node.State.Position,middle,rotation)+ new Vector3(0,leg_thickness*scale,0);
+            node.State.Position = RotateAroundPoint(node.State.Position,middle,rotation);
         }
         addSpringTo(l_arm[0],l_shoulder);
         addSpringTo(l_arm[1],l_shoulder);
