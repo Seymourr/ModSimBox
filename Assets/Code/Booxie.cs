@@ -144,7 +144,7 @@ public class Booxie: MonoBehaviour
         addSpringTo(l_arm[3],l_shoulder);
         
         //Add puppetstrings
-        if(puppet_strings){
+        if(1+1==2){
             float stringHeight = 5.0f;
             addSpringTo(l_shoulder,l_shoulder.State.Position+new Vector3(0,stringHeight,0));
             addSpringTo(r_shoulder,l_shoulder.State.Position+new Vector3(0,stringHeight,0));
@@ -301,6 +301,9 @@ public class Booxie: MonoBehaviour
     
     void ApplySprings(){
         foreach (var spring in springs){
+            if(spring.IsPuppetString&&!puppet_strings){
+                continue;
+            }
             spring.ApplySpringForces();
         }
     }

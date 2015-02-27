@@ -5,6 +5,11 @@ public class Spring {
 	private Node node1 = null;
 	private Node node2 = null;
     private Vector3 p;
+    
+    bool isPuppetString = false;
+    public bool IsPuppetString {
+        get { return isPuppetString; }
+    }
    
     float length = 2.0f;
     public float SpringLength {
@@ -34,6 +39,7 @@ public class Spring {
     public Spring(Node n1, Vector3 pp){
 		node1 = n1;
 		p = pp;
+        isPuppetString=true;
     }
 
 
