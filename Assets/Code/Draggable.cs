@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Draggable : MonoBehaviour {
 
+	 public bool dragged = false;
 	private Transform m_dragHook; 
 
 	public Transform getDragHook()

@@ -10,6 +10,12 @@ public class SpringTest: MonoBehaviour
     private Node nodePreFab = null;
  
 	[SerializeField]
+	private Transform someThing = null;
+
+	[SerializeField]
+	private Transform someThing2 = null;
+
+	[SerializeField]
     private Vector3 m_gravity = new Vector3(0,-9.82f,0);
     
     [SerializeField]
@@ -39,11 +45,11 @@ public class SpringTest: MonoBehaviour
     {
         m_integrators.Add(IntegratorType.RK4, new RK4Integrator());
         Node node = Instantiate(nodePreFab, m_spawnPoint, Quaternion.identity) as Node;
-      //  node.transform.parent = transform;
-		node.GetComponent<Draggable> ().setDragHook (/*Insert something draggable of type Transform..*/node.transform.parent);
+        node.transform.parent = transform;
+		node.GetComponent<Draggable> ().setDragHook (/*Insert something draggable of type Transform..*/someThing);
         Node node2 = Instantiate(nodePreFab, m_spawnPoint+(new Vector3(0.05f,1,0)), Quaternion.identity) as Node;
-    //    node2.transform.parent = transform;
-	    node2.GetComponent<Draggable> ().setDragHook (/*Insert something draggable of type Transform..*/node2.transform.parent);
+        node2.transform.parent = transform;
+		node2.GetComponent<Draggable> ().setDragHook (/*Insert something draggable of type Transform..*/someThing2);
         nodes = new List<Node>();
         nodes.Add(node);
         nodes.Add(node2);
@@ -54,7 +60,7 @@ public class SpringTest: MonoBehaviour
 	void Update () 
     {
         m_accumulator += Mathf.Min(Time.deltaTime / m_integratorTimeStep, 3.0f);
-
+	
         while (m_accumulator > 1.0f)
         {
             m_accumulator -= 1.0f;
@@ -67,8 +73,11 @@ public class SpringTest: MonoBehaviour
     void ApplyForces(float timeStep)
     {
         ClearAndApplyGravity();
+		MoveUpdate ();
         ApplyGroundForces();
         ApplySprings();
+		//ConstraintTopPointToRoot ();
+
     }
 
     void ClearAndApplyGravity()
@@ -111,6 +120,25 @@ public class SpringTest: MonoBehaviour
         }
     }
     
+	void MoveUpdate()
+	{
+		//	n.State.Velocity = (someThing.transform.position - n.State.Position) / m_integratorTimeStep;
+		//	n.State.Velocity = n.transform.position / m_interg //(n.transform.position / m_integratorTimeStep);
+		if (nodes [0].GetComponent<Draggable> ().dragged) {
+			nodes [0].State.Velocity = (someThing.transform.position - nodes [0].State.Position) / m_integratorTimeStep;
+		} else if(nodes[1].GetComponent<Draggable>().dragged){
+			nodes[1].State.Velocity = (someThing2.transform.position - nodes[1].State.Position) / m_integratorTimeStep;
+		}
+		//	
+	}
+	void ConstraintTopPointToRoot()
+	{
+		if (someThing != null)
+		{
+			nodes[0].State.Velocity = (someThing.transform.position - nodes[0].State.Position) / m_integratorTimeStep;
+		}
+		
+	}
     void ApplySprings(){
         foreach (var spring in springs){
             spring.ApplySpringForces();
