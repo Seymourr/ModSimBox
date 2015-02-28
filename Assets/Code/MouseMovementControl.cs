@@ -17,7 +17,6 @@ public class MouseMovementControl : MonoBehaviour {
 	private Vector3	m_dragClickHit;
 
 	void Start () {
-	
 	}
 	
 	// Update is called once per frame
@@ -27,8 +26,8 @@ public class MouseMovementControl : MonoBehaviour {
 				//drag along xz-plane
 				Vector2 move = (Vector2)Input.mousePosition - m_mouseStart;
 				move *= m_dragSpeed;
-				m_dragHook.position = new Vector3(m_dragOrigin.x + move.x, m_dragOrigin.y, m_dragOrigin.z + move.y);
-
+				Debug.Log (m_dragHook.position);
+				m_dragHook.position = new Vector3(m_dragOrigin.x + move.x, m_dragOrigin.y, m_dragOrigin.z + move.y);		
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				RaycastHit [] hits;
 				hits = Physics.RaycastAll(ray, 100.0f);
@@ -40,6 +39,7 @@ public class MouseMovementControl : MonoBehaviour {
 						break;						
 					}
 				}
+				Debug.Log (m_dragHook.position);
 			}
 			if(Input.GetMouseButtonUp(m_mouseButton)){
 				m_dragging = false;
@@ -47,6 +47,7 @@ public class MouseMovementControl : MonoBehaviour {
 				Screen.showCursor = true;
 			}
 		} else if(Input.GetMouseButtonDown(m_mouseButton)){
+		
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			bool foundDraggable = false;
 			RaycastHit[] hits;
@@ -56,10 +57,8 @@ public class MouseMovementControl : MonoBehaviour {
 					m_dragClickHit = hit.point;
 				} else {
 					if (foundDraggable) continue;
-					
 					GameObject target = hit.transform.gameObject;
 					if (target.HasComponent<Draggable>()) {	
-						//Debug.Log("begin drag");
 						m_dragging = true;
 						m_dragHook = target.GetComponent<Draggable>().getDragHook();
 						m_mouseStart = Input.mousePosition;

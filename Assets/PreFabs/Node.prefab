@@ -12,6 +12,7 @@ GameObject:
   - 23: {fileID: 2334668}
   - 114: {fileID: 11439028}
   - 114: {fileID: 11410478}
+  - 135: {fileID: 13515238}
   m_Layer: 0
   m_Name: Node
   m_TagString: Untagged
@@ -81,6 +82,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Mass: 1
+--- !u!135 &13515238
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134668}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: .500000119
+  m_Center: {x: 5.96046448e-08, y: 0, z: -8.94069672e-08}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

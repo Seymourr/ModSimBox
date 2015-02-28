@@ -39,11 +39,11 @@ public class SpringTest: MonoBehaviour
     {
         m_integrators.Add(IntegratorType.RK4, new RK4Integrator());
         Node node = Instantiate(nodePreFab, m_spawnPoint, Quaternion.identity) as Node;
-        node.transform.parent = transform;
-		node.GetComponent<Draggable> ().setDragHook (/*Insert something draggable of type Transform..*/transform);
+      //  node.transform.parent = transform;
+		node.GetComponent<Draggable> ().setDragHook (/*Insert something draggable of type Transform..*/node.transform.parent);
         Node node2 = Instantiate(nodePreFab, m_spawnPoint+(new Vector3(0.05f,1,0)), Quaternion.identity) as Node;
-        node2.transform.parent = transform;
-		node2.GetComponent<Draggable> ().setDragHook (/*Insert something draggable of type Transform..*/transform);
+    //    node2.transform.parent = transform;
+	    node2.GetComponent<Draggable> ().setDragHook (/*Insert something draggable of type Transform..*/node2.transform.parent);
         nodes = new List<Node>();
         nodes.Add(node);
         nodes.Add(node2);
