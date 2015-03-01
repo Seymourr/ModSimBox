@@ -262,6 +262,7 @@ public class Booxie: MonoBehaviour
     {
         ClearAndApplyGravity();
         ApplyGroundForces();
+		ApplyNodeForces();
         ApplySprings();
 		DragUpdate ();
     }
@@ -301,6 +302,34 @@ public class Booxie: MonoBehaviour
         }
     }
     
+	/*Force between nodes (body parts) to enable collision between them. */
+	void ApplyNodeForces(){
+		foreach (var node1 in nodes) //Collision is possible between all body parts
+		{
+			foreach (var node2 in nodes)
+			{
+				float node1Radius = node1.transform.localScale.x * 0.5f; //Radius of node 1
+				float node2Radius = node2.transform.localScale.x * 0.5f; //Radius of node 2
+
+				Vector3 node1toNode2 = node2.State.Position - node1.State.Position;
+				float distance = node1toNode2.magnitude;
+				if(distance != 0)
+				{
+					node1toNode2 /= distance; //Normalize
+					distance -= node1Radius + node2Radius; //Adjust distance based on radiuses. 
+				}
+				if(distance < 0)
+				{
+					float penetrationDepth = distance;
+					node1.ApplyForce(1000.0f * penetrationDepth * node1toNode2); //Force outwards.
+					node1.ApplyForce(0.001f * penetrationDepth * node1.State.Velocity); //Damping
+					node2.ApplyForce(-(penetrationDepth * 1000.0f * node1toNode2)); //Force
+					node2.ApplyForce(0.001f * -(penetrationDepth * node1.State.Velocity));//damping
+				}
+			}
+		}
+	}
+
     void ApplySprings(){
         foreach (var spring in springs){
             if(spring.IsPuppetString&&!puppet_strings){
