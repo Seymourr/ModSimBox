@@ -50,7 +50,8 @@ public class Booxie: MonoBehaviour
     
     
     
-    private List<Node> nodes = null;
+    public List<Node> nodes = null; //Required for drag
+	public Spring dragSpring = null;
     private List<Spring> springs = null;
     private float m_accumulator = 0.0f;
     private Dictionary<IntegratorType, Integrator> m_integrators = new Dictionary<IntegratorType,Integrator>();
@@ -262,6 +263,7 @@ public class Booxie: MonoBehaviour
         ClearAndApplyGravity();
         ApplyGroundForces();
         ApplySprings();
+		DragUpdate ();
     }
 
     void ClearAndApplyGravity()
@@ -307,6 +309,15 @@ public class Booxie: MonoBehaviour
             spring.ApplySpringForces();
         }
     }
+
+	void DragUpdate()
+	{
+		if (dragSpring != null) 
+		{
+			dragSpring.ApplySpringForces ();
+			
+		}
+	}
 
     void AdvanceSimulation(){
         m_integrators[m_integratorType].Advance(nodes, ApplyForces, m_integratorTimeStep);

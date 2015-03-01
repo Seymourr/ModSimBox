@@ -187,6 +187,7 @@ MonoBehaviour:
   hip_width: 2
   nodeSize: .5
   puppet_strings: 1
+  nodes: []
 --- !u!4 &333569500
 Transform:
   m_ObjectHideFlags: 0
@@ -198,7 +199,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5
 --- !u!1 &761941419
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,6 +290,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810c06b557c304d03a9fffdaea07f5bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DragPrefab: {fileID: 11468204, guid: 2b58b7b6c3a4c1b4193b8a59c031c23e, type: 2}
+  sprT: {fileID: 333569499}
 --- !u!4 &1052261410
 Transform:
   m_ObjectHideFlags: 0
@@ -300,7 +303,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
 --- !u!1 &1804207118
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,7 +373,7 @@ Transform:
   m_LocalScale: {x: 2, y: 1, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
 --- !u!1 &2114061475
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,7 +453,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2114061475}
   m_LocalRotation: {x: .173648193, y: 0, z: 0, w: .984807789}
-  m_LocalPosition: {x: -.0199999996, y: 9, z: -9.96000004}
+  m_LocalPosition: {x: -.0199999996, y: 11, z: -11.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

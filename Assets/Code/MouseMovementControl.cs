@@ -6,6 +6,12 @@ using System.Collections;
  */
 public class MouseMovementControl : MonoBehaviour {
 
+	[SerializeField]
+	private Node DragPrefab = null;
+
+	[SerializeField]
+	private Booxie sprT = null; //Modify
+
 	private const int m_mouseButton = 0;
 	private const int m_targetGizmoRadius = 1;
 	private const float m_dragSpeed = 0.015f;
@@ -17,6 +23,10 @@ public class MouseMovementControl : MonoBehaviour {
 	private Vector3	m_dragClickHit;
 
 	GameObject latestTarget;
+	Node n1;
+	Node n2;
+	bool springDrag = false;
+	private float m_integratorTimeStep = 1.0f / 60.0f; //Ev modify
 	void Start () {
 	}
 	
@@ -28,7 +38,13 @@ public class MouseMovementControl : MonoBehaviour {
 				Vector2 move = (Vector2)Input.mousePosition - m_mouseStart;
 				move *= m_dragSpeed;
 				m_dragHook.position = new Vector3(m_dragOrigin.x + move.x, m_dragOrigin.y, m_dragOrigin.z + move.y);	
-
+			
+				if(springDrag)
+				{
+					n2.transform.position = new Vector3(m_dragOrigin.x + move.x, m_dragOrigin.y, m_dragOrigin.z + move.y);
+					n1.State.Velocity = (n2.transform.position - n1.State.Position) / m_integratorTimeStep;
+				
+				}
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				RaycastHit [] hits;
 				hits = Physics.RaycastAll(ray, 100.0f);
@@ -43,6 +59,13 @@ public class MouseMovementControl : MonoBehaviour {
 
 			}
 			if(Input.GetMouseButtonUp(m_mouseButton)){
+				springDrag = false;
+				n1 = null;
+				sprT.dragSpring = null;
+				Destroy (n2.gameObject);
+				sprT.nodes.Remove (n2);
+				n2 = null;
+
 				m_dragging = false;
 				m_dragHook = null;
 				latestTarget.GetComponent<Draggable>().dragged = false;
@@ -64,6 +87,19 @@ public class MouseMovementControl : MonoBehaviour {
 					if (target.HasComponent<Draggable>()) {
 						target.GetComponent<Draggable>().dragged = true;
 						latestTarget = target;
+						if(target.GetComponent<Node>() != null)
+						{
+							springDrag = true;
+							n1 = target.GetComponent<Node>();
+
+							Vector2 move = (Vector2)Input.mousePosition - m_mouseStart;
+							move *= m_dragSpeed;
+							Vector3 startPos = new Vector3(m_dragOrigin.x + move.x, m_dragOrigin.y, m_dragOrigin.z + move.y);	
+							n2 = Instantiate(DragPrefab, startPos, Quaternion.identity) as Node;
+
+							sprT.nodes.Add (n2); //Requirement: Nodes has to be implemented and >active<
+							sprT.dragSpring = new Spring(n1, n2); //Requirement, must have dragSpring
+						}
 						m_dragging = true;
 						m_dragHook = target.GetComponent<Draggable>().getDragHook();
 						m_mouseStart = Input.mousePosition;

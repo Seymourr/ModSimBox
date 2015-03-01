@@ -5,6 +5,7 @@ public class Spring {
 	private Node node1 = null;
 	private Node node2 = null;
     private Vector3 p;
+	public bool print = false;
     
     bool isPuppetString = false;
     public bool IsPuppetString {
@@ -44,26 +45,28 @@ public class Spring {
 
 
 	public void ApplySpringForces(){
-        Vector3 normLized;
-        if(node2 != null){
-            normLized = node1.State.Position - node2.State.Position;
-        } else{
-            normLized = node1.State.Position - p;
-        }
-		float temp = normLized.magnitude;
-		normLized /= temp;
-		Vector3 FSpring = stiffness*(length - temp) * normLized;
-        if(node2 != null){
-            Vector3 FDamp = -damping * (node1.State.Velocity - node2.State.Velocity);
-            node1.ApplyForce (FDamp);
-            node2.ApplyForce (-FDamp); //Opposite force
-            node2.ApplyForce (-FSpring); //Opposite force
-        }
+				Vector3 normLized;
+				if (node2 != null) {
+		
+						normLized = node1.State.Position - node2.State.Position;
+				} else {
+						normLized = node1.State.Position - p;
+				}
+				float temp = normLized.magnitude;
+				normLized /= temp;
+				Vector3 FSpring = stiffness * (length - temp) * normLized;
+				if (node2 != null) {
+						Vector3 FDamp = -damping * (node1.State.Velocity - node2.State.Velocity);
+						node1.ApplyForce (FDamp);
+						node2.ApplyForce (-FDamp); //Opposite force
+						node2.ApplyForce (-FSpring); //Opposite force
+				}
             
-		node1.ApplyForce (FSpring);
+				node1.ApplyForce (FSpring);
 		
 		
-		
+				
+	
 
 	}
 }

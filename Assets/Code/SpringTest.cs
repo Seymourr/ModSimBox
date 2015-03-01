@@ -36,10 +36,11 @@ public class SpringTest: MonoBehaviour
     [SerializeField]
     private float m_groundDamping = 5.0f;
     
-    private List<Node> nodes = null;
+    public List<Node> nodes = null;
     private List<Spring> springs = null;
     private float m_accumulator = 0.0f;
     private Dictionary<IntegratorType, Integrator> m_integrators = new Dictionary<IntegratorType,Integrator>();
+	public Spring dragSpring = null;
     
 	void Start ()
     {
@@ -73,11 +74,11 @@ public class SpringTest: MonoBehaviour
     void ApplyForces(float timeStep)
     {
         ClearAndApplyGravity();
-		MoveUpdate ();
         ApplyGroundForces();
         ApplySprings();
-		//ConstraintTopPointToRoot ();
-
+	//	MoveUpdate ();
+	//	ConstraintTopPointToRoot ();
+		DragUpdate ();
     }
 
     void ClearAndApplyGravity()
@@ -120,6 +121,14 @@ public class SpringTest: MonoBehaviour
         }
     }
     
+	void DragUpdate()
+	{
+		if (dragSpring != null) 
+		{
+			dragSpring.ApplySpringForces ();
+
+		}
+	}
 	void MoveUpdate()
 	{
 		//	n.State.Velocity = (someThing.transform.position - n.State.Position) / m_integratorTimeStep;
