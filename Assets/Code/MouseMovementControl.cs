@@ -27,6 +27,7 @@ public class MouseMovementControl : MonoBehaviour {
 	Node n2;
 	bool springDrag = false;
 	private float m_integratorTimeStep = 1.0f / 60.0f; //Ev modify
+	private float originalHeight;
 	void Start () {
 	}
 	
@@ -41,7 +42,8 @@ public class MouseMovementControl : MonoBehaviour {
 			
 				if(springDrag)
 				{
-					n2.transform.position = new Vector3(m_dragOrigin.x + move.x, m_dragOrigin.y, m_dragOrigin.z + move.y);
+					n2.transform.position = new Vector3(m_dragOrigin.x + move.x, originalHeight, m_dragOrigin.z + move.y);
+					print (n1.transform.position);
 					n1.State.Velocity = (n2.transform.position - n1.State.Position) / m_integratorTimeStep;
 				
 				}
@@ -94,8 +96,11 @@ public class MouseMovementControl : MonoBehaviour {
 
 							Vector2 move = (Vector2)Input.mousePosition - m_mouseStart;
 							move *= m_dragSpeed;
-							Vector3 startPos = new Vector3(m_dragOrigin.x + move.x, m_dragOrigin.y, m_dragOrigin.z + move.y);	
-							n2 = Instantiate(DragPrefab, startPos, Quaternion.identity) as Node;
+							Vector3 startPos = new Vector3(m_dragOrigin.x, m_dragOrigin.y, m_dragOrigin.z);	
+							n2 = Instantiate(DragPrefab, n1.transform.position, Quaternion.identity) as Node;
+							originalHeight = n1.transform.position[1];
+				
+						
 
 							sprT.nodes.Add (n2); //Requirement: Nodes has to be implemented and >active<
 							sprT.dragSpring = new Spring(n1, n2); //Requirement, must have dragSpring
