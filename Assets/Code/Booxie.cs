@@ -180,7 +180,7 @@ public class Booxie: MonoBehaviour
         if(1+1==2){
             float stringHeight = 5.0f;
             addSpringTo(l_shoulder,l_shoulder.State.Position+new Vector3(0,stringHeight,0));
-            addSpringTo(r_shoulder,l_shoulder.State.Position+new Vector3(0,stringHeight,0));
+            addSpringTo(r_shoulder,r_shoulder.State.Position+new Vector3(0,stringHeight,0));
             addSpringTo(l_arm[8],l_arm[8].State.Position+new Vector3(0,stringHeight,0));
             addSpringTo(r_arm[8],r_arm[8].State.Position+new Vector3(0,stringHeight,0));
         }
@@ -213,6 +213,14 @@ public class Booxie: MonoBehaviour
         //shoulder - arm - hand
         addSkeletonTo(10,l_arm[17],l_arm[8],l_shoulder);
         addSkeletonTo(10,r_arm[17],r_arm[8],r_shoulder);
+        
+        //spine - shoulder - arms
+        addSkeletonTo(10,l_arm[8],l_shoulder,lastSpine);
+        addSkeletonTo(10,r_arm[8],r_shoulder,lastSpine);
+        
+        // spine spine spine
+        addSkeletonTo(10,spines[0],spines[1],spines[2]);
+        addSkeletonTo(10,spines[1],spines[2],spines[3]);
         
 	}
     
