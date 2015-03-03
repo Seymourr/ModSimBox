@@ -186,14 +186,15 @@ MonoBehaviour:
   leg_thickness: 1
   hip_width: 2
   nodeSize: .5
-  skeleton_stiffness_scale: 30
+  skeleton_stiffness_scale: 60
   puppet_strings: 1
-  useColDetection: 0
-  printLines: 0
+  useColDetection: 1
+  printLines: 1
+  printPuppetStrings: 1
   joint_restrictions: 1
   opposite_force: 1
   lift_right_leg: 0
-  lift_left_leg: 1
+  lift_left_leg: 0
   nodes: []
 --- !u!4 &333569500
 Transform:
@@ -377,7 +378,7 @@ Transform:
   m_GameObject: {fileID: 1804207118}
   m_LocalRotation: {x: -.707106829, y: 0, z: 0, w: .707106829}
   m_LocalPosition: {x: 0, y: 5, z: 7}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalScale: {x: 3, y: 1, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
