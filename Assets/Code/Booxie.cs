@@ -51,6 +51,12 @@ public class Booxie: MonoBehaviour
     [SerializeField]
     private bool puppet_strings = false;
     
+	[SerializeField]
+	private bool useColDetection = false;
+	
+	[SerializeField]
+	private bool printLines = false;
+
     [SerializeField]
     private bool joint_restrictions = true;
     
@@ -63,6 +69,7 @@ public class Booxie: MonoBehaviour
     [SerializeField]
     private bool lift_left_leg = false;
     
+
     
     public List<Node> nodes = null; //Required for drag
 	public Spring dragSpring = null;
@@ -332,38 +339,35 @@ public class Booxie: MonoBehaviour
 				Destroy (go);
 			}
 		}
-		gos = new List<GameObject> ();
-		Color c1 = Color.gray;
 
-		foreach (Spring spr in springs)
-		{
-			if(spr.getNode2() == null) //node2 is null
-			{
-			} 
-			else if(spr.getNode1().transform.localScale.x < 0.5f && spr.getNode2().transform.localScale.x < 0.5f)
-			{
-				GameObject go = new GameObject();
-				gos.Add(go);
-				LineRenderer lr = go.AddComponent<LineRenderer>();
-				lr.material = new Material(Shader.Find("Particles/Additive"));
-				lr.SetColors(c1, c1);
-				lr.SetWidth (0.05f,0.05f);
-				lr.SetPosition(0, spr.getNode1().gameObject.transform.position); 
-				lr.SetPosition(1, spr.getNode2().gameObject.transform.position);
-			}
-			else 
-			{
+		if (printLines) {
+						gos = new List<GameObject> ();
+						Color c1 = Color.gray;
 
-				GameObject go = new GameObject();
-				gos.Add(go);
-				LineRenderer lr = go.AddComponent<LineRenderer>();
-				lr.material = new Material(Shader.Find("Particles/Additive"));
-				lr.SetColors(c1, c1);
-				lr.SetWidth (0.5f,0.5f);
-				lr.SetPosition(0, spr.getNode1().gameObject.transform.position); 
-				lr.SetPosition(1, spr.getNode2().gameObject.transform.position);
-			}
-		}
+						foreach (Spring spr in springs) {
+								if (spr.getNode2 () == null) { //node2 is null
+								} else if (spr.getNode1 ().transform.localScale.x < 0.5f && spr.getNode2 ().transform.localScale.x < 0.5f) {
+										GameObject go = new GameObject ();
+										gos.Add (go);
+										LineRenderer lr = go.AddComponent<LineRenderer> ();
+										//	lr.material = new Material(Shader.Find("Particles/Additive"));
+										lr.SetColors (c1, c1);
+										lr.SetWidth (0.05f, 0.05f);
+										lr.SetPosition (0, spr.getNode1 ().gameObject.transform.position); 
+										lr.SetPosition (1, spr.getNode2 ().gameObject.transform.position);
+								} else {
+
+										GameObject go = new GameObject ();
+										gos.Add (go);
+										LineRenderer lr = go.AddComponent<LineRenderer> ();
+										lr.material = new Material (Shader.Find ("Particles/Additive"));
+										lr.SetColors (c1, c1);
+										lr.SetWidth (0.5f, 0.5f);
+										lr.SetPosition (0, spr.getNode1 ().gameObject.transform.position); 
+										lr.SetPosition (1, spr.getNode2 ().gameObject.transform.position);
+								}
+						}
+				}
 
 	}
 
@@ -371,7 +375,10 @@ public class Booxie: MonoBehaviour
     {
         ClearAndApplyGravity();
         ApplyGroundForces();
-		ApplyNodeForces();
+		if (useColDetection)
+		{
+			ApplyNodeForces ();
+		}
         ApplySprings();
 		DragUpdate ();
         if(joint_restrictions){
