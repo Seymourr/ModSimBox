@@ -18,8 +18,18 @@ public class Spring {
         set { length = value; }
     }
     
-    
 	float stiffness = 2000.0f;
+
+	public Node getNode1(){
+		return node1;
+	}
+
+	public Node getNode2(){
+		if(node2 != null)
+			return node2;
+		return null;
+	}
+
     public float Stiffness {
         get { return stiffness; }
         set { stiffness = value; }

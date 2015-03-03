@@ -70,6 +70,7 @@ public class Booxie: MonoBehaviour
     private List<SkeletonJoint> skeleton = null;
     private float m_accumulator = 0.0f;
     private Dictionary<IntegratorType, Integrator> m_integrators = new Dictionary<IntegratorType,Integrator>();
+	private List<GameObject> gos; //Gameobject List for linerenderer.
     
 	void Start (){
         m_integrators.Add(IntegratorType.RK4, new RK4Integrator());
@@ -313,6 +314,8 @@ public class Booxie: MonoBehaviour
 
 	void Update () 
     {
+
+
         m_accumulator += Mathf.Min(Time.deltaTime / m_integratorTimeStep, 3.0f);
 
         while (m_accumulator > 1.0f)
@@ -321,6 +324,46 @@ public class Booxie: MonoBehaviour
 
             AdvanceSimulation();
         }
+
+		if (gos != null) 
+		{
+			foreach (GameObject go in gos) 
+			{
+				Destroy (go);
+			}
+		}
+		gos = new List<GameObject> ();
+		Color c1 = Color.gray;
+
+		foreach (Spring spr in springs)
+		{
+			if(spr.getNode2() == null) //node2 is null
+			{
+			} 
+			else if(spr.getNode1().transform.localScale.x < 0.5f && spr.getNode2().transform.localScale.x < 0.5f)
+			{
+				GameObject go = new GameObject();
+				gos.Add(go);
+				LineRenderer lr = go.AddComponent<LineRenderer>();
+				lr.material = new Material(Shader.Find("Particles/Additive"));
+				lr.SetColors(c1, c1);
+				lr.SetWidth (0.05f,0.05f);
+				lr.SetPosition(0, spr.getNode1().gameObject.transform.position); 
+				lr.SetPosition(1, spr.getNode2().gameObject.transform.position);
+			}
+			else 
+			{
+
+				GameObject go = new GameObject();
+				gos.Add(go);
+				LineRenderer lr = go.AddComponent<LineRenderer>();
+				lr.material = new Material(Shader.Find("Particles/Additive"));
+				lr.SetColors(c1, c1);
+				lr.SetWidth (0.5f,0.5f);
+				lr.SetPosition(0, spr.getNode1().gameObject.transform.position); 
+				lr.SetPosition(1, spr.getNode2().gameObject.transform.position);
+			}
+		}
 
 	}
 
