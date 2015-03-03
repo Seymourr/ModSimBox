@@ -78,12 +78,14 @@ public class Booxie: MonoBehaviour
     private float m_accumulator = 0.0f;
     private Dictionary<IntegratorType, Integrator> m_integrators = new Dictionary<IntegratorType,Integrator>();
 	private List<GameObject> gos; //Gameobject List for linerenderer.
+	Material mat; // Material for lines
     
 	void Start (){
         m_integrators.Add(IntegratorType.RK4, new RK4Integrator());
         nodes = new List<Node>();
         springs = new List<Spring>();
         skeleton = new List<SkeletonJoint>();
+		mat = new Material (Shader.Find("Particles/Additive"));
         
         //legs
         Vector3 leg_dist = new Vector3(hip_width*scale,0,0);
@@ -350,7 +352,7 @@ public class Booxie: MonoBehaviour
 										GameObject go = new GameObject ();
 										gos.Add (go);
 										LineRenderer lr = go.AddComponent<LineRenderer> ();
-										//	lr.material = new Material(Shader.Find("Particles/Additive"));
+										lr.material = mat;	
 										lr.SetColors (c1, c1);
 										lr.SetWidth (0.05f, 0.05f);
 										lr.SetPosition (0, spr.getNode1 ().gameObject.transform.position); 
@@ -360,7 +362,7 @@ public class Booxie: MonoBehaviour
 										GameObject go = new GameObject ();
 										gos.Add (go);
 										LineRenderer lr = go.AddComponent<LineRenderer> ();
-										lr.material = new Material (Shader.Find ("Particles/Additive"));
+										lr.material = mat;
 										lr.SetColors (c1, c1);
 										lr.SetWidth (0.5f, 0.5f);
 										lr.SetPosition (0, spr.getNode1 ().gameObject.transform.position); 
