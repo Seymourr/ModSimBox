@@ -19,13 +19,13 @@ public class Spring {
     }
     
     
-	float stiffness = 800.0f;
+	float stiffness = 2000.0f;
     public float Stiffness {
         get { return stiffness; }
         set { stiffness = value; }
     }
     
-	float damping = 2.0f;
+	float damping = 10.0f;
     public float Damping {
         get { return damping; }
         set { damping = value; }

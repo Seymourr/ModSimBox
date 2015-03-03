@@ -186,7 +186,12 @@ MonoBehaviour:
   leg_thickness: 1
   hip_width: 2
   nodeSize: .5
+  skeleton_stiffness_scale: 30
   puppet_strings: 1
+  joint_restrictions: 1
+  opposite_force: 1
+  lift_right_leg: 1
+  lift_left_leg: 0
   nodes: []
 --- !u!4 &333569500
 Transform:

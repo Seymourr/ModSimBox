@@ -46,13 +46,28 @@ public class Booxie: MonoBehaviour
     private float nodeSize = 0.5f;
     
     [SerializeField]
+    private float skeleton_stiffness_scale = 1.0f;
+    
+    [SerializeField]
     private bool puppet_strings = false;
     
+    [SerializeField]
+    private bool joint_restrictions = true;
+    
+    [SerializeField]
+    private bool opposite_force = true;
+
+    [SerializeField]
+    private bool lift_right_leg = false;
+    
+    [SerializeField]
+    private bool lift_left_leg = false;
     
     
     public List<Node> nodes = null; //Required for drag
 	public Spring dragSpring = null;
     private List<Spring> springs = null;
+    private List<SkeletonJoint> skeleton = null;
     private float m_accumulator = 0.0f;
     private Dictionary<IntegratorType, Integrator> m_integrators = new Dictionary<IntegratorType,Integrator>();
     
@@ -60,6 +75,7 @@ public class Booxie: MonoBehaviour
         m_integrators.Add(IntegratorType.RK4, new RK4Integrator());
         nodes = new List<Node>();
         springs = new List<Spring>();
+        skeleton = new List<SkeletonJoint>();
         
         //legs
         Vector3 leg_dist = new Vector3(hip_width*scale,0,0);
@@ -99,10 +115,13 @@ public class Booxie: MonoBehaviour
         nodes.Add(spine);
         spine.transform.localScale = new Vector3(spine_length,spine_length,spine_length);
         
+        List<Node> spines = new List<Node>();
+        spines.Add(spine);
         Node lastSpine = spine;
         for(int i = 1 ; i<spine_cords ; i++){
             Node prev = lastSpine;
             lastSpine = addNode(lastSpine,0,spine_length,0);
+            spines.Add(lastSpine);
             lastSpine.transform.localScale = new Vector3(spine_length,spine_length,spine_length);
             addSpringTo(lastSpine,prev);
         }
@@ -124,25 +143,25 @@ public class Booxie: MonoBehaviour
         //arms
         List<Node> r_arm = createLeg(r_shoulder.State.Position+new Vector3(-nodeSize*scale+leg_thickness*scale+leg_height*scale,-leg_height*scale-leg_thickness*scale/2,-leg_thickness/2+nodeSize*scale/2));
         Vector3 middle = r_arm[0].State.Position+(r_arm[16].State.Position-r_arm[0].State.Position)/2;
-        var rotation = Quaternion.Euler(0, 0, -90);
+        var rotation = Quaternion.Euler(0, 0, 90);
         foreach (Node node in r_arm){
             node.State.Position = RotateAroundPoint(node.State.Position,middle,rotation);
         }
-        addSpringTo(r_arm[0],r_shoulder);
-        addSpringTo(r_arm[1],r_shoulder);
-        addSpringTo(r_arm[2],r_shoulder);
-        addSpringTo(r_arm[3],r_shoulder);
+        addSpringTo(r_arm[16],r_shoulder);
+        addSpringTo(r_arm[15],r_shoulder);
+        addSpringTo(r_arm[14],r_shoulder);
+        addSpringTo(r_arm[13],r_shoulder);
         
         List<Node> l_arm = createLeg(l_shoulder.State.Position+new Vector3(-shoulder_size/2+nodeSize*scale/2-leg_thickness*scale-leg_height*scale,-leg_height*scale-leg_thickness*scale/2,-leg_thickness/2+nodeSize*scale/2));
         middle = l_arm[0].State.Position+(l_arm[16].State.Position-l_arm[0].State.Position)/2;
-        rotation = Quaternion.Euler(0, 0, 90);
+        rotation = Quaternion.Euler(0, 0, -90);
         foreach (Node node in l_arm){
             node.State.Position = RotateAroundPoint(node.State.Position,middle,rotation);
         }
-        addSpringTo(l_arm[0],l_shoulder);
-        addSpringTo(l_arm[1],l_shoulder);
-        addSpringTo(l_arm[2],l_shoulder);
-        addSpringTo(l_arm[3],l_shoulder);
+        addSpringTo(l_arm[16],l_shoulder);
+        addSpringTo(l_arm[15],l_shoulder);
+        addSpringTo(l_arm[14],l_shoulder);
+        addSpringTo(l_arm[13],l_shoulder);
         
         //Add puppetstrings
         if(1+1==2){
@@ -153,6 +172,34 @@ public class Booxie: MonoBehaviour
             addSpringTo(r_arm[8],r_arm[8].State.Position+new Vector3(0,stringHeight,0));
         }
         
+        
+        //Add skeleton
+        // foot - knee - hip
+        addSkeletonTo(10,r_leg[17],r_leg[8],rhip);
+        addSkeletonTo(10,l_leg[17],l_leg[8],lhip);
+        
+        
+        // knee - hip - spine
+        if(lift_right_leg)
+            addSkeletonTo(10,r_leg[8],rhip,spine,new Vector3(0,0,-1));
+        else{
+            addSkeletonTo(10,r_leg[8],rhip,spine);
+            
+        }
+        if(lift_left_leg)
+            addSkeletonTo(10,l_leg[8],lhip,spine,new Vector3(0,0,-1));
+        else{
+            addSkeletonTo(10,l_leg[8],lhip,spine);
+            
+        }
+        
+        // hip - spine - spine
+        addSkeletonTo(10,lhip,spine,spines[1]);
+        addSkeletonTo(10,rhip,spine,spines[1]);
+        
+        //shoulder - arm - hand
+        addSkeletonTo(10,l_arm[17],l_arm[8],l_shoulder);
+        addSkeletonTo(10,r_arm[17],r_arm[8],r_shoulder);
         
 	}
     
@@ -165,6 +212,8 @@ public class Booxie: MonoBehaviour
         List<Node> t1= createBox(leg_thickness,leg_height,leg_thickness,pos+new Vector3(0,(leg_thickness+leg_height)*scale,0)); // left thigh
         Node lknee = addNode(c1[4],leg_thickness*scale/2,leg_thickness*scale/2,leg_thickness*scale/2);
         lknee.transform.localScale = new Vector3(leg_thickness*scale*1.3f,leg_thickness*scale*1.3f,leg_thickness*scale*1.3f);
+        Node foot = addNode(c1[0],leg_thickness*scale/2,-leg_thickness*scale/2,leg_thickness*scale/2);
+        foot.transform.localScale = new Vector3(leg_thickness*scale*1.3f,leg_thickness*scale*1.3f,leg_thickness*scale*1.3f);
         addSpringTo(lknee,c1[5]);
         addSpringTo(lknee,c1[6]);
         addSpringTo(lknee,c1[7]);
@@ -174,6 +223,10 @@ public class Booxie: MonoBehaviour
         addSpringTo(lknee,t1[3]);
         c1.Add(lknee);
         c1.AddRange(t1);
+        addSpringTo(foot,c1[1]);
+        addSpringTo(foot,c1[2]);
+        addSpringTo(foot,c1[3]);
+        c1.Add(foot);
         return c1;
     }
 
@@ -218,6 +271,19 @@ public class Booxie: MonoBehaviour
         addSpringTo(n001,n100);
         
         return box;
+    }
+    
+    private void addSkeletonTo(float stiffness,Node target, Node pivot1, Node pivot2){
+        var f_angle = (target.State.Position-pivot1.State.Position).normalized;
+        addSkeletonTo(stiffness,target,pivot1,pivot2,f_angle);
+    }
+    private void addSkeletonTo(float stiffness,Node target, Node pivot1, Node pivot2, Vector3 angle){
+        var f_angle = (target.State.Position-pivot1.State.Position).normalized;
+        print(f_angle);
+        SkeletonJoint skel = new SkeletonJoint(stiffness,target,pivot1,pivot2,angle);
+        SkeletonJoint skel2 = new SkeletonJoint(stiffness,pivot2,pivot1,target,-angle);
+        skeleton.Add(skel);
+       // skeleton.Add(skel2);
     }
     
     private Node addNode(Node parent, float offsetx, float offsety, float offsetz){
@@ -265,6 +331,15 @@ public class Booxie: MonoBehaviour
 		ApplyNodeForces();
         ApplySprings();
 		DragUpdate ();
+        if(joint_restrictions){
+            applyJointRestrictions();
+        }
+    }
+    
+    void applyJointRestrictions(){
+        foreach (var skel in skeleton){
+            skel.ApplySkeletonForces(opposite_force,skeleton_stiffness_scale);
+        }
     }
 
     void ClearAndApplyGravity()
