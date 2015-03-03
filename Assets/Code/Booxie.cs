@@ -57,6 +57,9 @@ public class Booxie: MonoBehaviour
 	[SerializeField]
 	private bool printLines = false;
 
+	[SerializeField]
+	private bool printPuppetStrings = false;
+
     [SerializeField]
     private bool joint_restrictions = true;
     
@@ -345,9 +348,20 @@ public class Booxie: MonoBehaviour
 		if (printLines) {
 						gos = new List<GameObject> ();
 						Color c1 = Color.gray;
+						Color c2 = Color.red;
 
 						foreach (Spring spr in springs) {
 								if (spr.getNode2 () == null) { //node2 is null
+									if(spr.IsPuppetString && printPuppetStrings){
+										GameObject go = new GameObject ();
+										gos.Add (go);
+										LineRenderer lr = go.AddComponent<LineRenderer> ();
+										lr.material = mat;	
+										lr.SetColors (c2, c2);
+										lr.SetWidth (0.3f, 0.3f);
+										lr.SetPosition (0, spr.getNode1 ().gameObject.transform.position); 
+										lr.SetPosition (1, spr.GetVector());
+									}
 								} else if (spr.getNode1 ().transform.localScale.x < 0.5f && spr.getNode2 ().transform.localScale.x < 0.5f) {
 										GameObject go = new GameObject ();
 										gos.Add (go);

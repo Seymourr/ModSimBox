@@ -30,6 +30,10 @@ public class Spring {
 		return null;
 	}
 
+	public Vector3 GetVector(){
+		return p;
+	}
+
     public float Stiffness {
         get { return stiffness; }
         set { stiffness = value; }
