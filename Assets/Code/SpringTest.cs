@@ -41,6 +41,7 @@ public class SpringTest: MonoBehaviour
     private float m_accumulator = 0.0f;
     private Dictionary<IntegratorType, Integrator> m_integrators = new Dictionary<IntegratorType,Integrator>();
 	public Spring dragSpring = null;
+	private GameObject go;
     
 	void Start ()
     {
@@ -60,6 +61,12 @@ public class SpringTest: MonoBehaviour
 
 	void Update () 
     {
+		Destroy (go);
+		go = new GameObject ();
+		LineRenderer lr = go.gameObject.AddComponent<LineRenderer>();
+		lr.SetWidth (0.2f,0.2f);
+		lr.SetPosition (0, nodes [0].gameObject.transform.position); 
+		lr.SetPosition (1, nodes [1].gameObject.transform.position); 
         m_accumulator += Mathf.Min(Time.deltaTime / m_integratorTimeStep, 3.0f);
 	
         while (m_accumulator > 1.0f)
